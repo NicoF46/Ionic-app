@@ -1,11 +1,34 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons>
+      <ion-back-button slot="icon-only" defaultHref="home"></ion-back-button>
+    </ion-buttons>
     <ion-title> {{dispositivo.nombre}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div>Acá deberia traer mas información del dispositivo y su medida del sensor</div>
+  <div *ngIf="this.ultimaMedicion == null">Acá deberia traer mas información del dispositivo y su medida del sensor
+  </div>
   <h2> Current Location: {{dispositivo.ubicacion}}</h2>
+  <ion-grid fixed=true *ngIf="this.ultimaMedicion != null">
+    <ion-row>
+      <ion-col>
+        Fecha
+      </ion-col>
+      <ion-col>
+        Valor
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let medicion of this.mediciones">
+      <ion-col>
+        {{medicion.fecha}}
+      </ion-col>
+      <ion-col>
+        {{medicion.valor}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -4,6 +4,15 @@ export class Dispositivo{
     private _ubicacion: string;
     private _electrovalvulaId: number;
 
+    static DispositivoDesdeJson(obj: Object){
+        return new Dispositivo(
+            obj['dispositivoid'],
+            obj['nombre'],
+            obj['ubicacion'],
+            obj['electrovalvulaId']
+        )
+    }
+
     constructor(dispositivo: number,nombre: string,ubicacion: string,electrovalvulaId: number){
         this._dispositivoId=dispositivo;
         this._nombre=nombre;

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Dispositivo } from '../model/dispositivo';
+import { Medicion } from '../model/medicion';
 import { DispositivoService } from '../services/dispositivo.service';
+import { MedicionService } from '../services/medicion.service';
 
 @Component({
   selector: 'app-dispositivo',
@@ -10,12 +12,21 @@ import { DispositivoService } from '../services/dispositivo.service';
 })
 export class DispositivoPage implements OnInit {
   public dispositivo:Dispositivo;
-  constructor(private router:ActivatedRoute, private dServ:DispositivoService) { }
+  public ultimaMedicion:Medicion;
+  public mediciones:Medicion[];
+
+  constructor(private router:ActivatedRoute, private dServ:DispositivoService, private mServ:MedicionService) { }
 
   ngOnInit() {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-    console.log(this.dispositivo);
+    this.mServ.getMedicionByIdDispositivo(idDispositivo).then((med)=>{
+      this.ultimaMedicion=med;
+    });
+    this.mServ.getMedicionesByIdDispositivo(idDispositivo).then((med)=>{
+      console.log(med);
+      this.mediciones=med;
+    });
   }
 
   ionViewWillEnter(){
