@@ -9,7 +9,7 @@ export class Dispositivo{
             obj['dispositivoid'],
             obj['nombre'],
             obj['ubicacion'],
-            obj['electrovalvulaId']
+            obj['electrovalvulaid']
         )
     }
 
