@@ -28,7 +28,6 @@ export class DispositivoService {
   }
 
    getDispositivo(id):Dispositivo{
-     console.log("Entra al servicio para devolver el dispositivo id");
     return this.listado.filter(dispositivo=> dispositivo.dispositivoId==id)[0];
  }
 }

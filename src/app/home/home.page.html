@@ -16,10 +16,10 @@
   </div>
   <div>
     <ion-list>
-      <ion-item *ngFor="let dispositivo of dispositivoServ.listado"
+      <ion-item *ngFor="let dispositivo of dispositivoServ.listado" 
         routerLink="/dispositivo/{{dispositivo.dispositivoId}}" routerDirection="root">
         <ion-avatar slot="start">
-          <ion-icon size="large" name="thermometer"></ion-icon>
+          <ion-icon appDirectivaattr size="large" name="thermometer"></ion-icon>
         </ion-avatar>
         <ion-label>
           <h2>Sensor {{dispositivo.dispositivoId}} - {{dispositivo.nombre}}</h2>
