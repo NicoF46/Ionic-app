@@ -1,0 +1,18 @@
+<ion-grid fixed=true *ngIf="this.mediciones != null">
+  <ion-row>
+    <ion-col>
+      Fecha
+    </ion-col>
+    <ion-col>
+      Valor
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let medicion of this.mediciones">
+    <ion-col>
+      {{medicion.fecha |dateParser}}
+    </ion-col>
+    <ion-col>
+      {{medicion.valor}}
+    </ion-col>
+  </ion-row>
+</ion-grid>

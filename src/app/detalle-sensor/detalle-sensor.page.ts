@@ -5,7 +5,6 @@ import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import { Dispositivo } from '../model/dispositivo';
 import { Medicion } from '../model/medicion';
-import { Riego } from '../model/riego';
 import { DispositivoService } from '../services/dispositivo.service';
 import { MedicionService } from '../services/medicion.service';
 import { RiegoService } from '../services/riego.service';
@@ -24,26 +23,21 @@ export class DetalleSensorPage implements OnInit {
   public myChart;
   private chartOptions;
   public ultimaMedicion: Medicion;
-  public mediciones: Medicion[];
-  public riegos: Riego[];
   public dispositivo: Dispositivo;
   public mostrarRiegos: boolean = false;
   public mostrarMediciones: boolean = false;
   public accionBotonValvula: string;
+  public dispositivoId: String;
+  public valvulaAbierta: boolean;
+  public gradoAperturaValvula: Number = 100;
 
   constructor(private router: ActivatedRoute, private mServ: MedicionService, private dServ: DispositivoService, private rServ: RiegoService) {
-    let idDispositivo = this.router.snapshot.paramMap.get('id');
-    this.dispositivo = this.dServ.getDispositivo(idDispositivo);
+    this.dispositivoId = this.router.snapshot.paramMap.get('id');
+    this.dispositivo = this.dServ.getDispositivo(this.dispositivoId);
   }
 
   ngOnInit() {
-    this.mServ.getMedicionesByIdDispositivo(this.dispositivo.dispositivoId).then((med) => {
-      this.mediciones = med;
-    });
-    this.rServ.getLogsRiegoByIdValvula(this.dispositivo.electrovalvulaId).then((riegos) => {
-      this.riegos = riegos;
-      this.actualizarBotonAccionValvula();
-    });
+    this.revisarStatusValvula().then(() => this.actualizarBotonAccionValvula());
     this.mServ.getMedicionByIdDispositivo(this.dispositivo.dispositivoId).then((med) => {
       this.ultimaMedicion = med;
     }).then(() => {
@@ -141,11 +135,10 @@ export class DetalleSensorPage implements OnInit {
   }
 
   actualizarBotonAccionValvula(){
-    console.log(this.riegos[0].apertura);
-    if(this.riegos[0].apertura == 0)
-      this.accionBotonValvula = "Abrir electrovalvula";
-    else
+    if(this.valvulaAbierta == true)
       this.accionBotonValvula = "Cerrar electrovalvula";
+    else
+      this.accionBotonValvula = "Abrir electrovalvula";
   }
 
   cambiarVisibilidadRiego() {
@@ -159,23 +152,19 @@ export class DetalleSensorPage implements OnInit {
   async accionarValvula() {
     let aperturaValvula: Number = 0;
     if (this.accionBotonValvula == "Abrir electrovalvula"){
-      aperturaValvula = 100;
+      aperturaValvula = this.gradoAperturaValvula;
     }
-    console.log(aperturaValvula);
     await this.rServ.generarAperturaValvulaById(this.dispositivo.electrovalvulaId, aperturaValvula);
     await this.mServ.agregarMedicion(new Medicion(1, moment().format(),Math.floor((Math.random()*90)+10),this.dispositivo.dispositivoId  ))
-    await this.actualizarListadoRiegos();
+    await this.revisarStatusValvula();
     this.actualizarBotonAccionValvula();
     this.ultimaMedicion = await this.mServ.getMedicionByIdDispositivo(this.dispositivo.dispositivoId);
     this.actualizarChart();
-    this.actualizarListadoMediciones();
   }
 
-  async actualizarListadoRiegos() {
-    this.riegos = await this.rServ.getLogsRiegoByIdValvula(this.dispositivo.electrovalvulaId);
-  }
-
-  async actualizarListadoMediciones() {
-    this.mediciones = await this.mServ.getMedicionesByIdDispositivo(this.dispositivo.dispositivoId)
+  async revisarStatusValvula() {
+    let ultimoLog = await this.rServ.getUltimoLogByIdValvula(this.dispositivo.electrovalvulaId);
+    this.valvulaAbierta = ultimoLog.apertura > 0
+    return this.valvulaAbierta;
   }
 }

@@ -1,51 +1,17 @@
 <div id="highcharts" style="width:100%; height:300px;"></div>
-  <ion-header>
-    <ion-toolbar>
-       <ion-buttons>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons>
       <ion-back-button slot="icon-only" text="" defaultHref="home"></ion-back-button>
     </ion-buttons>
-      <ion-title>Mediciones</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-title>Mediciones</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-content>
-    <ion-button (click)="accionarValvula()">{{accionBotonValvula}}</ion-button>
-    <ion-button (click)="cambiarVisibilidadMediciones()">Ver todas las mediciones</ion-button>
-    <ion-grid fixed=true *ngIf="this.ultimaMedicion != null && this.mostrarMediciones==true">
-    <ion-row>
-      <ion-col>
-        Fecha
-      </ion-col>
-      <ion-col>
-        Valor
-      </ion-col>
-    </ion-row>
-    <ion-row *ngFor="let medicion of this.mediciones">
-      <ion-col>
-        {{medicion.fecha |dateParser}}
-      </ion-col>
-      <ion-col>
-        {{medicion.valor}}
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-    <ion-button (click)="cambiarVisibilidadRiego()">Ver logs de riego</ion-button>
-    <ion-grid fixed=true *ngIf="this.riegos != null && this.mostrarRiegos==true">
-      <ion-row>
-        <ion-col>
-          Fecha
-        </ion-col>
-        <ion-col>
-          Valor
-        </ion-col>
-      </ion-row>
-      <ion-row *ngFor="let riego of this.riegos">
-        <ion-col>
-          {{riego.fecha |dateParser}} 
-        </ion-col>
-        <ion-col>
-          {{riego.apertura}}
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
+<ion-content>
+  <ion-button (click)="accionarValvula()">{{accionBotonValvula}}</ion-button>
+  <ion-button (click)="cambiarVisibilidadMediciones()">Ver todas las mediciones</ion-button>
+  <app-log-mediciones [dispositivoId]="dispositivoId"  *ngIf="this.mostrarMediciones==true" ></app-log-mediciones>
+  <ion-button (click)="cambiarVisibilidadRiego()">Ver logs de riego</ion-button>
+  <app-log-riego [valvulaId]="dispositivo.electrovalvulaId"  *ngIf="this.mostrarRiegos==true"></app-log-riego>
+</ion-content>
