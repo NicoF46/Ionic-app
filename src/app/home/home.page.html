@@ -17,7 +17,7 @@
   <div>
     <ion-list>
       <ion-item *ngFor="let dispositivo of dispositivoServ.listado" 
-        routerLink="/dispositivo/{{dispositivo.dispositivoId}}" routerDirection="root">
+        routerLink="/dispositivo/{{dispositivo.dispositivoId}}/detalle-sensor" routerDirection="root">
         <ion-avatar slot="start">
           <ion-icon appDirectivaattr size="large" name="thermometer"></ion-icon>
         </ion-avatar>

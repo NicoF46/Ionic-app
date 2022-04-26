@@ -41,13 +41,14 @@ export class DetalleSensorPage implements OnInit {
     this.mServ.getMedicionByIdDispositivo(this.dispositivo.dispositivoId).then((med) => {
       this.ultimaMedicion = med;
     }).then(() => {
+      this.generarChart();
+    }).then(() => {
       this.actualizarChart()
     }
     )
   }
 
   ionViewDidEnter() {
-    this.generarChart();
   }
 
   generarChart() {
@@ -121,7 +122,7 @@ export class DetalleSensorPage implements OnInit {
     this.myChart = Highcharts.chart('highcharts', this.chartOptions);
   }
 
-  actualizarChart(){
+  actualizarChart() {
     this.valorObtenido = Number(this.ultimaMedicion.valor);
     this.myChart.update({
       series: [{
@@ -134,8 +135,8 @@ export class DetalleSensorPage implements OnInit {
     });
   }
 
-  actualizarBotonAccionValvula(){
-    if(this.valvulaAbierta == true)
+  actualizarBotonAccionValvula() {
+    if (this.valvulaAbierta == true)
       this.accionBotonValvula = "Cerrar electrovalvula";
     else
       this.accionBotonValvula = "Abrir electrovalvula";
@@ -151,11 +152,11 @@ export class DetalleSensorPage implements OnInit {
 
   async accionarValvula() {
     let aperturaValvula: Number = 0;
-    if (this.accionBotonValvula == "Abrir electrovalvula"){
+    if (this.accionBotonValvula == "Abrir electrovalvula") {
       aperturaValvula = this.gradoAperturaValvula;
     }
     await this.rServ.generarAperturaValvulaById(this.dispositivo.electrovalvulaId, aperturaValvula);
-    await this.mServ.agregarMedicion(new Medicion(1, moment().format(),Math.floor((Math.random()*90)+10),this.dispositivo.dispositivoId  ))
+    await this.mServ.agregarMedicion(new Medicion(1, moment().format(), Math.floor((Math.random() * 90) + 10), this.dispositivo.dispositivoId))
     await this.revisarStatusValvula();
     this.actualizarBotonAccionValvula();
     this.ultimaMedicion = await this.mServ.getMedicionByIdDispositivo(this.dispositivo.dispositivoId);
