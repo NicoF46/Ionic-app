@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as Highcharts from 'highcharts';
+import * as moment from 'moment';
 import { Dispositivo } from '../model/dispositivo';
 import { Medicion } from '../model/medicion';
 import { Riego } from '../model/riego';
@@ -26,16 +27,13 @@ export class DetalleSensorPage implements OnInit {
   public mediciones: Medicion[];
   public riegos: Riego[];
   public dispositivo: Dispositivo;
-  public mostrarRiegos:boolean=false;
-  public mostrarMediciones:boolean=false;
-
+  public mostrarRiegos: boolean = false;
+  public mostrarMediciones: boolean = false;
+  public accionBotonValvula: string;
 
   constructor(private router: ActivatedRoute, private mServ: MedicionService, private dServ: DispositivoService, private rServ: RiegoService) {
     let idDispositivo = this.router.snapshot.paramMap.get('id');
     this.dispositivo = this.dServ.getDispositivo(idDispositivo);
-    this.mServ.getMedicionByIdDispositivo(idDispositivo).then((med) => {
-      this.ultimaMedicion = med;
-    });
   }
 
   ngOnInit() {
@@ -44,20 +42,14 @@ export class DetalleSensorPage implements OnInit {
     });
     this.rServ.getLogsRiegoByIdValvula(this.dispositivo.electrovalvulaId).then((riegos) => {
       this.riegos = riegos;
+      this.actualizarBotonAccionValvula();
     });
-
-    setTimeout(() => {
-      this.valorObtenido = Number(this.ultimaMedicion.valor);
-      this.myChart.update({
-        series: [{
-          name: 'kPA',
-          data: [this.valorObtenido],
-          tooltip: {
-            valueSuffix: ' kPA'
-          }
-        }]
-      });
-    }, 2000);
+    this.mServ.getMedicionByIdDispositivo(this.dispositivo.dispositivoId).then((med) => {
+      this.ultimaMedicion = med;
+    }).then(() => {
+      this.actualizarChart()
+    }
+    )
   }
 
   ionViewDidEnter() {
@@ -135,22 +127,55 @@ export class DetalleSensorPage implements OnInit {
     this.myChart = Highcharts.chart('highcharts', this.chartOptions);
   }
 
-  cambiarVisibilidadRiego(){
-    this.mostrarRiegos=!this.mostrarRiegos;
-  }
-
-  cambiarVisibilidadMediciones(){
-    this.mostrarMediciones=!this.mostrarMediciones;
-  }
-
-  async generarAperturaValvula(){
-    await this.rServ.generarAperturaValvulaById(this.dispositivo.electrovalvulaId)
-    this.actualizarListadoRiegos()
-  }
-
-  actualizarListadoRiegos(){
-    this.rServ.getLogsRiegoByIdValvula(this.dispositivo.electrovalvulaId).then((riegos) => {
-      this.riegos = riegos;
+  actualizarChart(){
+    this.valorObtenido = Number(this.ultimaMedicion.valor);
+    this.myChart.update({
+      series: [{
+        name: 'kPA',
+        data: [this.valorObtenido],
+        tooltip: {
+          valueSuffix: ' kPA'
+        }
+      }]
     });
+  }
+
+  actualizarBotonAccionValvula(){
+    console.log(this.riegos[0].apertura);
+    if(this.riegos[0].apertura == 0)
+      this.accionBotonValvula = "Abrir electrovalvula";
+    else
+      this.accionBotonValvula = "Cerrar electrovalvula";
+  }
+
+  cambiarVisibilidadRiego() {
+    this.mostrarRiegos = !this.mostrarRiegos;
+  }
+
+  cambiarVisibilidadMediciones() {
+    this.mostrarMediciones = !this.mostrarMediciones;
+  }
+
+  async accionarValvula() {
+    let aperturaValvula: Number = 0;
+    if (this.accionBotonValvula == "Abrir electrovalvula"){
+      aperturaValvula = 100;
+    }
+    console.log(aperturaValvula);
+    await this.rServ.generarAperturaValvulaById(this.dispositivo.electrovalvulaId, aperturaValvula);
+    await this.mServ.agregarMedicion(new Medicion(1, moment().format(),Math.floor((Math.random()*90)+10),this.dispositivo.dispositivoId  ))
+    await this.actualizarListadoRiegos();
+    this.actualizarBotonAccionValvula();
+    this.ultimaMedicion = await this.mServ.getMedicionByIdDispositivo(this.dispositivo.dispositivoId);
+    this.actualizarChart();
+    this.actualizarListadoMediciones();
+  }
+
+  async actualizarListadoRiegos() {
+    this.riegos = await this.rServ.getLogsRiegoByIdValvula(this.dispositivo.electrovalvulaId);
+  }
+
+  async actualizarListadoMediciones() {
+    this.mediciones = await this.mServ.getMedicionesByIdDispositivo(this.dispositivo.dispositivoId)
   }
 }

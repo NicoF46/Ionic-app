@@ -9,7 +9,7 @@
   </ion-header>
 
   <ion-content>
-    <ion-button (click)="generarAperturaValvula()">Abrir electrovalvula</ion-button>
+    <ion-button (click)="accionarValvula()">{{accionBotonValvula}}</ion-button>
     <ion-button (click)="cambiarVisibilidadMediciones()">Ver todas las mediciones</ion-button>
     <ion-grid fixed=true *ngIf="this.ultimaMedicion != null && this.mostrarMediciones==true">
     <ion-row>

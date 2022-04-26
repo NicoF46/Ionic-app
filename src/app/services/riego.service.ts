@@ -20,8 +20,8 @@ export class RiegoService {
     });
   };
 
-  generarAperturaValvulaById(id) {
-    return this._http.post(this.urlApi + "/api/riego/agregar", {fecha: moment().format(), apertura: 100, electrovalvulaid: id}).toPromise().then((result)=>{
+  generarAperturaValvulaById(id, apertura) {
+    return this._http.post(this.urlApi + "/api/riego", {fecha: moment().format(), apertura: apertura, electrovalvulaid: id}).toPromise().then((result)=>{
       return result;
     });
   }

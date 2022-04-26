@@ -26,7 +26,7 @@ export class MedicionService {
   };
 
   agregarMedicion(medicion: Medicion) {
-    return this._http.post(this.urlApi + "/api/medicion/agregar", { fecha: medicion.fecha, valor: medicion.valor, dispositivoId: medicion.dispositivoId }).toPromise().then((result) => {
+    return this._http.post(this.urlApi + "/api/medicion", { fecha: medicion.fecha, valor: medicion.valor, dispositivoId: medicion.dispositivoId }).toPromise().then((result) => {
       return result;
     });
   }
