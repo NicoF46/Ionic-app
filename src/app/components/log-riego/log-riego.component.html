@@ -1,0 +1,18 @@
+<ion-grid fixed=true *ngIf="this.riegos != null">
+  <ion-row>
+    <ion-col>
+      Fecha
+    </ion-col>
+    <ion-col>
+      Valor
+    </ion-col>
+  </ion-row>
+  <ion-row *ngFor="let riego of this.riegos">
+    <ion-col>
+      {{riego.fecha |dateParser}}
+    </ion-col>
+    <ion-col>
+      {{riego.apertura}}
+    </ion-col>
+  </ion-row>
+</ion-grid>
