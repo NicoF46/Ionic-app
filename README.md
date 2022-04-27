@@ -15,4 +15,4 @@ Para realizar la ejecucion de la aplicacion, se debe realizar los siguientes ste
 
 ## Demo
 En el siguiente enlace se puede observar una demo de la app funcionando.
-https://drive.google.com/file/d/17hPlDUX6orE5h6PP6cY-0jUTkiaDlN3n/view?usp=sharing
+https://drive.google.com/file/d/1XPaLxTK5zMH80YhxcSxV1cCyC0yLoVuZ/view?usp=sharing
