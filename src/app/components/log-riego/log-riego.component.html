@@ -4,7 +4,7 @@
       Fecha
     </ion-col>
     <ion-col>
-      Valor
+      Porcentaje de apertura
     </ion-col>
   </ion-row>
   <ion-row *ngFor="let riego of this.riegos">
@@ -12,7 +12,7 @@
       {{riego.fecha |dateParser}}
     </ion-col>
     <ion-col>
-      {{riego.apertura}}
+      {{riego.apertura}}%
     </ion-col>
   </ion-row>
 </ion-grid>
