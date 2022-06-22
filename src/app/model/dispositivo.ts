@@ -1,22 +1,22 @@
 export class Dispositivo{
     private _dispositivoId: number;
     private _nombre: string; 
-    private _ubicacion: string;
+    private _status: string;
     private _electrovalvulaId: number;
 
     static DispositivoDesdeJson(obj: Object){
         return new Dispositivo(
-            obj['dispositivoid'],
-            obj['nombre'],
-            obj['ubicacion'],
+            obj['device_id'],
+            obj['device_model'],
+            obj['status'],
             obj['electrovalvulaid']
         )
     }
 
-    constructor(dispositivo: number,nombre: string,ubicacion: string,electrovalvulaId: number){
+    constructor(dispositivo: number,nombre: string,status: string,electrovalvulaId: number){
         this._dispositivoId=dispositivo;
         this._nombre=nombre;
-        this._ubicacion=ubicacion;
+        this._status=status;
         this._electrovalvulaId=electrovalvulaId;
     }
 
@@ -34,11 +34,11 @@ export class Dispositivo{
         this._nombre = value;
     }
 
-    public get ubicacion(): string {
-        return this._ubicacion;
+    public get status(): string {
+        return this._status;
     }
-    public set ubicacion(value: string) {
-        this._ubicacion = value;
+    public set status(value: string) {
+        this._status = value;
     }
     
     public get electrovalvulaId(): number {

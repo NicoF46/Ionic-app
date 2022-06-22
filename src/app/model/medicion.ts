@@ -7,10 +7,10 @@ export class Medicion{
 
     static MedicionDesdeJson(obj: Object){
         return new Medicion(
-            obj['medicionid'],
-            obj['fecha'],
-            obj['valor'],
-            obj['dispositivoid']
+            obj['record_id'],
+            obj['created_at'],
+            obj['value']['temperatura'],
+            obj['device_id']
         )
     }
 
