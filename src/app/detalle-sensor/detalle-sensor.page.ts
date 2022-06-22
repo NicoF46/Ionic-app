@@ -92,7 +92,7 @@ export class DetalleSensorPage implements OnInit {
           rotation: 'auto'
         },
         title: {
-          text: 'kPA'
+          text: '°C'
         },
         plotBands: [{
           from: 0,
@@ -111,10 +111,10 @@ export class DetalleSensorPage implements OnInit {
       ,
 
       series: [{
-        name: 'kPA',
+        name: '°C',
         data: [this.valorObtenido],
         tooltip: {
-          valueSuffix: ' kPA'
+          valueSuffix: ' °C'
         }
       }]
 
@@ -126,10 +126,10 @@ export class DetalleSensorPage implements OnInit {
     this.valorObtenido = Number(this.ultimaMedicion.valor);
     this.myChart.update({
       series: [{
-        name: 'kPA',
+        name: '°C',
         data: [this.valorObtenido],
         tooltip: {
-          valueSuffix: ' kPA'
+          valueSuffix: ' °C'
         }
       }]
     });

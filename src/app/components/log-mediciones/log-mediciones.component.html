@@ -4,7 +4,7 @@
       Fecha
     </ion-col>
     <ion-col>
-      kPA
+      °C
     </ion-col>
   </ion-row>
   <ion-row *ngFor="let medicion of this.mediciones">
@@ -16,3 +16,4 @@
     </ion-col>
   </ion-row>
 </ion-grid>
+<app-grafica [dispositivoId]="dispositivoId"></app-grafica>

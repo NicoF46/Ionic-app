@@ -9,9 +9,9 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="accionarValvula()">{{accionBotonValvula}}</ion-button>
+ <!-- <ion-button (click)="accionarValvula()">{{accionBotonValvula}}</ion-button> -->
   <ion-button (click)="cambiarVisibilidadMediciones()">Ver todas las mediciones</ion-button>
   <app-log-mediciones [dispositivoId]="dispositivoId"  *ngIf="this.mostrarMediciones==true" ></app-log-mediciones>
-  <ion-button (click)="cambiarVisibilidadRiego()">Ver logs de riego</ion-button>
-  <app-log-riego [valvulaId]="dispositivo.electrovalvulaId"  *ngIf="this.mostrarRiegos==true"></app-log-riego>
+<!--  <ion-button (click)="cambiarVisibilidadRiego()">Ver logs de riego</ion-button> -->
+<!--  <app-log-riego [valvulaId]="dispositivo.electrovalvulaId"  *ngIf="this.mostrarRiegos==true"></app-log-riego>-->
 </ion-content>
